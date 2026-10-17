@@ -1,314 +1,451 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>สุขสันต์วันเกิด!</title>
-    </head>
-<body>
-    <div id="butterfly-area" class="butterfly-container"></div>
-    <div class="background-blur">
-    <div class="birthday-card">
-        <h1>Happy Birthday!</h1>
-        <footer class="mt-4 text-muted text-center">
-        <div class="container">
-            <h5>&copy; A.LIFEOFBROOKLYN</h5>
-        </div>
-    </footer>
-    </div>
-    </div>
-    
-    <script>
-    const butterflyCount = 100; // <--- ปรับจำนวนผีเสื้อที่นี่ (30, 40, 50 ตามต้องการ)
-    const container = document.getElementById('butterfly-area');
-    
-    const butterflyImages = [
-        'https://img5.pic.in.th/file/secure-sv1/01cb5d47547a36126e.png',
-        'https://img2.pic.in.th/pic/025a17f8a8236c63b5.png',
-        'https://img5.pic.in.th/file/secure-sv1/03902cf9836572ef41.png',
-        'https://img2.pic.in.th/pic/044590d56e3540b162.png'
-    ];
-    
-    for (let i = 0; i < butterflyCount; i++) {
-        const random = (min, max) => Math.random() * (max - min) + min;
+<!doctype html>
+<html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>ขอโทษนะ Ploy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mali:wght@500;600;700&family=Noto+Sans+Thai+Looped:wght@400;500;700&display=swap">
+<style>
+/* Layout: one narrow column. A sad rabbit sits over the single question; the letter, Q&A and coupons unfold below only after she forgives. */
+:root {
+  --bg: #FFF0F5;
+  --surface: #FFFFFF;
+  --ink: #46283A;
+  --muted: #85596E;
+  --accent: #CF2F6C;
+  --accent-ink: #FFFFFF;
+  --accent-deep: #9A1D50;
+  --soft: #FFE1EC;
+  --line: #F3B7CC;
+  --lav: #D9CBFF;
+  --carrot: #FF8E3C;
+  --leaf: #4FAE5A;
+  --fur: #FFFFFF;
+  --fur-line: #46283A;
+  --ear-in: #FFB3CB;
+  --blush: #FF9DB8;
+  --nose: #F0628D;
+  --tear: #7CCBFF;
+  --dot: #FFD9E6;
+  --display: "Mali", "Noto Sans Thai Looped", "Sarabun", Tahoma, sans-serif;
+  --body: "Noto Sans Thai Looped", "Sarabun", Tahoma, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #271520;
+    --surface: #37212F;
+    --ink: #FFE8F0;
+    --muted: #D9AFC3;
+    --accent: #FF8DB4;
+    --accent-ink: #3A1126;
+    --accent-deep: #C45582;
+    --soft: #4A2A3E;
+    --line: #6B3B55;
+    --lav: #6C5A9B;
+    --carrot: #FF9F52;
+    --leaf: #6CC877;
+    --fur: #FFF4F8;
+    --fur-line: #1D0F18;
+    --ear-in: #FFAFC7;
+    --blush: #FF8FAE;
+    --nose: #F0628D;
+    --tear: #7CCBFF;
+    --dot: #33202B;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #271520;
+  --surface: #37212F;
+  --ink: #FFE8F0;
+  --muted: #D9AFC3;
+  --accent: #FF8DB4;
+  --accent-ink: #3A1126;
+  --accent-deep: #C45582;
+  --soft: #4A2A3E;
+  --line: #6B3B55;
+  --lav: #6C5A9B;
+  --carrot: #FF9F52;
+  --leaf: #6CC877;
+  --fur: #FFF4F8;
+  --fur-line: #1D0F18;
+  --ear-in: #FFAFC7;
+  --blush: #FF8FAE;
+  --nose: #F0628D;
+  --tear: #7CCBFF;
+  --dot: #33202B;
+  color-scheme: dark;
+}
 
-        const butterfly = document.createElement('div');
-        butterfly.className = 'butterfly';
-
-        // --- สุ่มค่าสำหรับ Duration, Delay, Hue, Flip (เหมือนเดิม) ---
-        const randDuration = random(0, 1);
-        const randDelay = random(0, 1);
-        const randHue = Math.floor(random(0, 360));
-        const randFlip = Math.random() > 0.5 ? 180 : 0; 
-        
-        butterfly.style.setProperty('--rand-duration', randDuration);
-        butterfly.style.setProperty('--rand-delay', randDelay);
-        butterfly.style.setProperty('--hue', randHue + 'deg');
-        butterfly.style.setProperty('--flip', randFlip + 'deg');
-
-        // --- เพิ่มการสุ่มตำแหน่งเริ่มต้นและระหว่างทาง (ใหม่) ---
-        // ตำแหน่งเริ่มต้น
-        butterfly.style.setProperty('--startX', random(-30, 0) + 'vw');
-        butterfly.style.setProperty('--startY', random(0, 100) + 'vh'); // สุ่ม Y ทั่วจอ
-
-        // จุดกลางทาง (ใช้ 3 จุดเพื่อให้เส้นทางโค้ง)
-        butterfly.style.setProperty('--midX1', random(10, 40) + 'vw');
-        butterfly.style.setProperty('--midY1', random(0, 100) + 'vh');
-        
-        butterfly.style.setProperty('--midX2', random(40, 70) + 'vw');
-        butterfly.style.setProperty('--midY2', random(0, 100) + 'vh');
-
-        butterfly.style.setProperty('--midX3', random(70, 100) + 'vw');
-        butterfly.style.setProperty('--midY3', random(0, 100) + 'vh');
-
-        // ตำแหน่งสิ้นสุด
-        butterfly.style.setProperty('--endX', random(100, 130) + 'vw'); // ออกนอกจอ
-        butterfly.style.setProperty('--endY', random(0, 100) + 'vh'); // สุ่ม Y ทั่วจอ
-
-        // สุ่มการหมุนและ Scale เล็กน้อยในแต่ละจุดแวะ
-        butterfly.style.setProperty('--rot1', random(-30, 30) + 'deg');
-        butterfly.style.setProperty('--rot2', random(30, 90) + 'deg');
-        butterfly.style.setProperty('--rot3', random(90, 180) + 'deg');
-        butterfly.style.setProperty('--rot4', random(180, 270) + 'deg');
-        butterfly.style.setProperty('--rot5', random(270, 360) + 'deg');
-
-        butterfly.style.setProperty('--scale1', random(0.8, 1.2));
-        butterfly.style.setProperty('--scale2', random(0.8, 1.2));
-        butterfly.style.setProperty('--scale3', random(0.8, 1.2));
-        butterfly.style.setProperty('--scale4', random(0.8, 1.2));
-        butterfly.style.setProperty('--scale5', random(0.8, 1.2));
-
-
-        // กำหนดรูปภาพผีเสื้อ
-        const imgUrl = butterflyImages[Math.floor(random(0, butterflyImages.length))]; // สุ่มรูปภาพจาก list
-        butterfly.style.backgroundImage = `url('${imgUrl}')`;
-
-        container.appendChild(butterfly);
-    }
-    const maxParticles = 300; // จำนวนสูงสุดของอนุภาคในหน่วยความจำ
-    const trailContainer = document.body; // ให้อนุภาคอยู่ใน body
-    
-    // รายการสีประกายไฟที่ต้องการ
-    const sparkColors = ['#ffd700', '#ff69b4', '#adff2f', '#ffffff']; // ทอง, ชมพู, เขียว, ขาว
-    
-    let lastTime = 0;
-    
-    document.addEventListener('mousemove', (e) => {
-        // จำกัดความถี่การสร้างอนุภาค (สร้างทุกๆ 16ms หรือประมาณ 60fps)
-        if (Date.now() - lastTime < 16) {
-            return;
-        }
-        lastTime = Date.now();
-
-        // 1. สร้างอนุภาค
-        const particle = document.createElement('div');
-        particle.className = 'trail-particle';
-
-        // 2. กำหนดตำแหน่งเริ่มต้นที่เมาส์
-        particle.style.left = `${e.clientX}px`;
-        particle.style.top = `${e.clientY}px`;
-
-        // 3. สุ่มค่า offset เพื่อให้ลอยไปหลายทิศทาง
-        const random = (min, max) => Math.random() * (max - min) + min;
-        const xOffset = random(-30, 30);
-        const yOffset = random(-50, -10); // เน้นให้ลอยขึ้น
-        const randColor = sparkColors[Math.floor(random(0, sparkColors.length))];
-        const randDuration = random(0.8, 1.2);
-
-        // 4. ตั้งค่าตัวแปร CSS และแอนิเมชัน
-        particle.style.setProperty('--x-offset', `${xOffset}px`);
-        particle.style.setProperty('--y-offset', `${yOffset}px`);
-        particle.style.setProperty('--color', randColor);
-        particle.style.animationDuration = `${randDuration}s`;
-        
-        // 5. เพิ่มอนุภาคเข้าใน DOM
-        trailContainer.appendChild(particle);
-
-        // 6. ลบอนุภาคออกจาก DOM เมื่อแอนิเมชันจบ (เพื่อไม่ให้กินหน่วยความจำ)
-        particle.addEventListener('animationend', () => {
-            particle.remove();
-        });
-    });
-    </script>
-
-    <style>
+* { box-sizing: border-box; }
 body {
-            font-family: "Krub", sans-serif;
-            background: url(https://img.freepik.com/premium-photo/enchanted-meadow-with-tall-grass-wildflowers-sparkling-stream-with-butterflies-bees-buzzing-around-warm-afternoon-sun-beautiful-anime-style_1317319-5850.jpg);
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        .background-blur {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 0;
-        }
-        /* สไตล์ของการ์ดอวยพร */
-        .birthday-card {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* เพิ่มเงาให้ดูมีมิติ */
-            padding: 40px;
-            text-align: center;
-            width: 270px;
-            z-index: 1; /* ให้การ์ดอยู่ด้านบนของพื้นหลังเบลอ */
-            position: relative; /* สำคัญสำหรับการกำหนด z-index */
-            /* แอนิเมชันตอนการ์ดปรากฏขึ้น */
-            animation: fadeIn 2s ease-out;
-        }
-
-        /* สไตล์หัวข้อหลัก (HBD) */
-        .birthday-card h1 {
-            /* ใช้ฟอนต์แบบตัวเขียนเพื่อความสวยงาม */
-            font-family: "Krub", sans-serif;
-            font-size: 4rem; /* ขนาดตัวอักษร */
-            margin: 0;
-            
-            /* แอนิเมชันเปลี่ยนสีตัวอักษร */
-            animation: colorChange 4s infinite;
-        }
-
-        /* สไตล์ข้อความอวยพร */
-        .birthday-card p {
-            font-size: 1.2rem;
-            color: #555;
-            margin-top: 20px;
-            line-height: 1.6;
-        }
-
-        /* ไอคอนเล็กๆ ด้านบน */
-        .birthday-card::before {
-            content: '🎉'; /* ใส่อีโมจิ */
-            font-size: 3rem;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        /* ---------------- */
-        /* แอนิเมชัน (Keyframes) */
-        /* ---------------- */
-
-        /* แอนิเมชันสำหรับการ์ดที่ค่อยๆ ปรากฏขึ้น */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* แอนิเมชันสำหรับเปลี่ยนสีหัวข้อ */
-        @keyframes colorChange {
-            0%   { color: #000000d2; } /* Tomato */
-            25%  { color: #000000b7; } /* Gold */
-            50%  { color: #00000083; } /* LimeGreen */
-            75%  { color: #00000044; } /* DodgerBlue */
-            100% { color: #000000d2; } /* กลับมาสีเดิม */
-        }
-@keyframes flyCommon {
-    0% { 
-        transform: translate(var(--startX, -10vw), var(--startY, 50vh)) scale(var(--scale1, 1)) rotate(var(--rot1, 0deg)); 
-        opacity: 0; 
-    }
-    25% { 
-        opacity: 0.9; 
-        transform: translate(var(--midX1, 15vw), var(--midY1, 10vh)) scale(var(--scale2, 1.1)) rotate(var(--rot2, 45deg)); 
-    }
-    50% { 
-        transform: translate(var(--midX2, 50vw), var(--midY2, 70vh)) scale(var(--scale3, 1.2)) rotate(var(--rot3, 135deg)); 
-    }
-    75% { 
-        transform: translate(var(--midX3, 80vw), var(--midY3, 20vh)) scale(var(--scale4, 1.1)) rotate(var(--rot4, 225deg)); 
-    }
-    100% { 
-        transform: translate(var(--endX, 110vw), var(--endY, 50vh)) scale(var(--scale5, 1)) rotate(var(--rot5, 360deg)); 
-        opacity: 0; 
-    }
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--dot) 2px, transparent 2.6px);
+  background-size: 26px 26px;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1rem;
+  line-height: 1.75;
 }
-/* --- CSS สำหรับอนุภาคตามเมาส์ (Mouse Trail) --- */
-@keyframes fade-up {
-    0% {
-        transform: translate(0, 0) scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(var(--x-offset), var(--y-offset)) scale(0); /* เคลื่อนที่ไปและเล็กลง */
-        opacity: 0;
-    }
+.page {
+  max-width: 34rem;
+  margin-inline: auto;
+  padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.page > * { min-width: 0; }
+
+h1, h2, h3 { font-family: var(--display); line-height: 1.4; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+
+.to {
+  align-self: center;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 16px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: .95rem;
+  color: var(--muted);
+}
+h1 { text-align: center; font-size: clamp(2rem, 8.5vw, 2.9rem); font-weight: 700; color: var(--accent); }
+
+/* rabbit */
+.stage { display: flex; flex-direction: column; gap: 14px; align-items: stretch; }
+.rabbit { display: block; width: min(210px, 58vw); height: auto; margin-inline: auto; overflow: visible; }
+.rabbit .fur { fill: var(--fur); stroke: var(--fur-line); stroke-width: 3; }
+.rabbit .ink { fill: none; stroke: var(--fur-line); stroke-width: 3; stroke-linecap: round; }
+.ear { transform-box: fill-box; transform-origin: 50% 100%; transition: transform .6s ease; }
+.ear .wig { transform-box: fill-box; transform-origin: 50% 100%; }
+.ear.l { transform: rotate(-5deg); }
+.ear.r { transform: rotate(5deg); }
+[data-mood="cry"] .ear.l { transform: rotate(-24deg); }
+[data-mood="cry"] .ear.r { transform: rotate(24deg); }
+[data-mood="happy"] .ear.l { transform: rotate(-2deg); }
+[data-mood="happy"] .ear.r { transform: rotate(2deg); }
+
+.e-happy, .m-happy, .hearts, .tears { display: none; }
+[data-mood="happy"] .e-open, [data-mood="happy"] .brows, [data-mood="happy"] .m-sad { display: none; }
+[data-mood="happy"] .e-happy, [data-mood="happy"] .m-happy, [data-mood="happy"] .hearts { display: inline; }
+[data-mood="cry"] .tears { display: inline; }
+.e-open { transform-box: fill-box; transform-origin: 50% 50%; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .ear.l .wig { animation: wig-l 4.2s ease-in-out infinite; }
+  .ear.r .wig { animation: wig-r 4.8s ease-in-out infinite .6s; }
+  .e-open { animation: blink 5s infinite; }
+  .tears .drop { animation: fall 1.4s ease-in infinite; }
+  .tears .drop + .drop { animation-delay: .5s; }
+  [data-mood="happy"] .bunny { animation: hop 1s ease-in-out infinite; }
+  .hearts .hh { animation: floatup 2.2s ease-in-out infinite; }
+  .hearts .hh:nth-child(2) { animation-delay: .7s; }
+  .hearts .hh:nth-child(3) { animation-delay: 1.4s; }
+}
+@keyframes wig-l { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-4deg); } }
+@keyframes wig-r { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(4deg); } }
+@keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+@keyframes fall { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(18px); opacity: 0; } }
+@keyframes hop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes floatup { 0%, 100% { transform: translateY(6px); opacity: .6; } 50% { transform: translateY(-6px); opacity: 1; } }
+
+.bubble {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 5.6rem;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: 22px;
+  padding: 14px 18px;
+  text-align: center;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.65;
+}
+.bubble::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  background: var(--surface);
+  border-left: 2px solid var(--line);
+  border-top: 2px solid var(--line);
+  transform: translateX(-50%) rotate(45deg);
 }
 
-.trail-particle {
-    position: fixed; /* ให้อนุภาคอยู่นิ่งเมื่อ scroll (ถ้ามี) */
-    width: 6px; /* ขนาดเล็กๆ */
-    height: 6px;
-    background-color: var(--color, gold); /* ใช้สีทองหรือสีสุ่ม */
-    border-radius: 50%; /* กลม */
-    pointer-events: none; /* ทำให้คลิกผ่านได้ */
-    opacity: 0;
-    z-index: 9999; /* ให้อยู่เหนือทุกอย่าง */
-    
-    /* ใช้ animation-delay เป็นค่าสุ่มเพื่อให้ดูวุ่นวาย */
-    animation: fade-up 1s ease-out forwards; /* เล่น 1 วินาที และค้างที่สถานะสุดท้าย (forwards) */
+/* the question */
+.ask { text-align: center; font-size: 1.5rem; font-weight: 700; }
+.choice {
+  position: relative;
+  min-height: 15rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: 16px;
+  padding-top: 6px;
+}
+.btn {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 999px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:focus-visible, .chip:focus-visible, .ticket:focus-visible, .field:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.btn-yes {
+  --grow: 1;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: calc(1.1rem * var(--grow));
+  padding: .7em 1.4em;
+  max-width: 100%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 0;
+  box-shadow: 0 5px 0 var(--accent-deep);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.btn-yes:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--accent-deep); }
+.btn-yes.solo { width: 100%; }
+.btn-no {
+  font-family: var(--body);
+  font-weight: 500;
+  font-size: .95rem;
+  padding: .55em 1.2em;
+  background: var(--surface);
+  color: var(--ink);
+  border: 2px solid var(--line);
+}
+.btn-no.flying { position: absolute; }
+@media (prefers-reduced-motion: no-preference) {
+  .btn-no.flying { transition: left .28s cubic-bezier(.3, 1.4, .5, 1), top .28s cubic-bezier(.3, 1.4, .5, 1); }
+  .btn-yes { transition: font-size .3s ease, transform .12s ease, box-shadow .12s ease; }
 }
 
-.butterfly-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1; /* ให้อยู่ใต้ background-blur */
-    overflow: hidden; /* ซ่อนผีเสื้อที่อยู่นอกจอ */
-}
+#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
+</style>
 
-.butterfly {
-    position: absolute;
-    width: 40px; 
-    height: 40px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0.8;
-    will-change: transform, opacity; 
-    transform-style: preserve-3d;
+<canvas id="confetti" aria-hidden="true"></canvas>
+<main class="page">
+  <span class="to">ถึง MABEL (PLOY)</span>
+  <h1>ไอขอโทษนะ Ploy</h1>
 
-    animation-name: flyCommon;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
-    /* --- แก้ไข: ลบ animation-direction: alternate; ออก เพื่อไม่ให้บินกลับทาง --- */
+  <div class="stage">
+    <svg id="rabbit" class="rabbit" data-mood="sorry" viewBox="0 0 220 250" role="img" aria-label="กระต่ายน้อยถือแครอท ทำหน้าสำนึกผิด">
+      <defs>
+        <path id="hrt" d="M0 3C0 -3 -8 -3 -8 3C-8 8 0 12 0 15C0 12 8 8 8 3C8 -3 0 -3 0 3Z"/>
+      </defs>
+      <g class="hearts">
+        <g class="hh"><use href="#hrt" x="34" y="66" fill="var(--accent)"/></g>
+        <g class="hh"><use href="#hrt" x="188" y="56" fill="var(--ear-in)"/></g>
+        <g class="hh"><use href="#hrt" x="110" y="8" fill="var(--accent)"/></g>
+      </g>
+      <g class="bunny">
+        <ellipse class="fur" cx="110" cy="204" rx="50" ry="40"/>
+        <ellipse class="fur" cx="84" cy="240" rx="19" ry="9"/>
+        <ellipse class="fur" cx="136" cy="240" rx="19" ry="9"/>
 
-    /* **เทคนิคการสุ่ม:** ดึงค่าจากตัวแปรที่กำหนดใน JavaScript */
-    animation-duration: calc(15s + var(--rand-duration) * 10s); /* 15 ถึง 25 วินาที */
-    animation-delay: calc(var(--rand-delay) * -25s); /* ใช้ค่าลบเพื่อให้เริ่มต้นที่จุดสุ่มในเส้นทางบิน */
-    
-    /* สุ่มสีและการหันหน้า */
-    filter: hue-rotate(var(--hue, 0deg)) brightness(var(--brightness, 1)); 
-    transform: rotateY(var(--flip, 0deg)); /* ใช้สำหรับสุ่มการหันหน้า */
-}
+        <g class="ear l"><g class="wig">
+          <ellipse class="fur" cx="84" cy="58" rx="17" ry="44"/>
+          <ellipse cx="84" cy="62" rx="8" ry="29" fill="var(--ear-in)"/>
+        </g></g>
+        <g class="ear r"><g class="wig">
+          <ellipse class="fur" cx="136" cy="58" rx="17" ry="44"/>
+          <ellipse cx="136" cy="62" rx="8" ry="29" fill="var(--ear-in)"/>
+        </g></g>
 
-/* --- แก้ไข z-index ของการ์ด ให้แน่ใจว่าอยู่หน้าสุด --- */
-.birthday-card {
-    /* ... โค้ดเดิมของการ์ด ... */
-    z-index: 3; /* ต้องสูงกว่า background-blur (z-index: 1) และ butterfly (z-index: 0) */
-    position: relative; 
-}
-h5 {
-    color: rgb(73, 70, 70);
-}
-    </style>
-</body>
-</html>
+        <ellipse class="fur" cx="110" cy="122" rx="60" ry="48"/>
+        <ellipse cx="66" cy="136" rx="11" ry="7" fill="var(--blush)" opacity=".75"/>
+        <ellipse cx="154" cy="136" rx="11" ry="7" fill="var(--blush)" opacity=".75"/>
+
+        <g class="e-open">
+          <circle cx="88" cy="118" r="6.5" fill="var(--fur-line)"/>
+          <circle cx="90.4" cy="115.6" r="2.2" fill="#fff"/>
+          <circle cx="132" cy="118" r="6.5" fill="var(--fur-line)"/>
+          <circle cx="134.4" cy="115.6" r="2.2" fill="#fff"/>
+        </g>
+        <g class="e-happy">
+          <path class="ink" d="M80 121Q88 110 96 121"/>
+          <path class="ink" d="M124 121Q132 110 140 121"/>
+        </g>
+        <g class="brows">
+          <path class="ink" d="M76 104L96 98" stroke-width="2.5"/>
+          <path class="ink" d="M124 98L144 104" stroke-width="2.5"/>
+        </g>
+
+        <ellipse cx="110" cy="130" rx="5.5" ry="4" fill="var(--nose)"/>
+        <path class="ink" d="M110 134V140" stroke-width="2.5"/>
+        <path class="ink m-sad" d="M100 148Q110 140 120 148"/>
+        <path class="m-happy" d="M98 140Q110 158 122 140Z" fill="var(--nose)" stroke="var(--fur-line)" stroke-width="3" stroke-linejoin="round"/>
+
+        <g class="tears">
+          <path class="drop" transform="translate(84 128)" d="M0 0C-4 6 -4 10 0 10C4 10 4 6 0 0Z" fill="var(--tear)"/>
+          <path class="drop" transform="translate(136 128)" d="M0 0C-4 6 -4 10 0 10C4 10 4 6 0 0Z" fill="var(--tear)"/>
+        </g>
+
+        <g transform="translate(146 178) rotate(16)">
+          <ellipse cx="-3" cy="-14" rx="3.6" ry="9" transform="rotate(-24 -3 -14)" fill="var(--leaf)" stroke="var(--fur-line)" stroke-width="2"/>
+          <ellipse cx="5" cy="-15" rx="3.6" ry="9" transform="rotate(20 5 -15)" fill="var(--leaf)" stroke="var(--fur-line)" stroke-width="2"/>
+          <path d="M-8 -6L8 -6L0 36Z" fill="var(--carrot)" stroke="var(--fur-line)" stroke-width="3" stroke-linejoin="round"/>
+        </g>
+        <ellipse class="fur" cx="142" cy="184" rx="13" ry="16"/>
+        <ellipse class="fur" cx="80" cy="186" rx="13" ry="16"/>
+      </g>
+    </svg>
+    <p id="bubble" class="bubble" role="status" aria-live="polite">ไอรู้ว่าไอทำให้ยูเสียใจ ไอขอโทษจริงๆ นะ ยูให้อภัยไอได้มั้ย</p>
+  </div>
+
+  <h2 id="ask-title" class="ask">ยูให้อภัยไอมั้ย?</h2>
+  <div id="choice" class="choice">
+    <button id="yes" class="btn btn-yes" type="button">ให้อภัยแล้ว ♡</button>
+    <button id="no" class="btn btn-no" type="button">ยังไม่ให้อภัย</button>
+  </div>
+
+</main>
+
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var rabbit = $('#rabbit'), bubble = $('#bubble'), choice = $('#choice');
+  var yes = $('#yes'), no = $('#no'), askTitle = $('#ask-title');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  var lines = [
+    'ไอรู้ว่าไอทำให้ยูเสียใจ ไอขอโทษจริงๆ นะ ยูให้อภัยไอได้มั้ย',
+    'ยูกดผิดปุ่มรึเปล่าา ลองใหม่อีกทีนะ',
+    'ไอตาแฉะแล้วนะ ให้อภัยไอเถอะ',
+    'ปุ่มมันหนีเองนะ ไม่ใช่ไอ (แต่ไอยังง้อต่อ)',
+    'กระต่ายน้อยร้องไห้แล้ว มาปลอบหน่อยได้มั้ย',
+    'ไอให้แครอทด้วยก็ได้ นะ นะ นะ',
+    'อีกนิดเดียวยูก็ใจอ่อนแล้ว ไอรู้',
+    'งั้นเหลือปุ่มเดียวละกันนะ'
+  ];
+  var MAX = lines.length - 1;
+  var tries = 0, last = 0, done = false;
+
+  function setMood(m) { rabbit.setAttribute('data-mood', m); }
+  function say(t) { bubble.textContent = t; }
+
+  function place() {
+    var c = choice.getBoundingClientRect();
+    var n = no.getBoundingClientRect();
+    var y = yes.getBoundingClientRect();
+    var w = n.width, h = n.height, pad = 12;
+    var yl = y.left - c.left - pad, yt = y.top - c.top - pad;
+    var yr = y.right - c.left + pad, yb = y.bottom - c.top + pad;
+    var x = 0, v = 0;
+    for (var i = 0; i < 40; i++) {
+      x = Math.random() * Math.max(0, c.width - w);
+      v = Math.random() * Math.max(0, c.height - h);
+      var hit = x < yr && x + w > yl && v < yb && v + h > yt;
+      if (!hit) break;
+    }
+    no.style.left = x + 'px';
+    no.style.top = v + 'px';
+  }
+
+  function dodge() {
+    var now = Date.now();
+    if (done || now - last < 350) return;
+    last = now;
+    tries++;
+    yes.style.setProperty('--grow', Math.min(1 + tries * 0.1, 1.7).toFixed(2));
+    setMood(tries >= 3 ? 'cry' : 'sorry');
+    say(lines[Math.min(tries, MAX)]);
+    if (tries >= MAX) {
+      no.hidden = true;
+      yes.classList.add('solo');
+      return;
+    }
+    no.classList.add('flying');
+    place();
+  }
+  ['pointerenter', 'pointerdown', 'focus', 'click'].forEach(function (ev) {
+    no.addEventListener(ev, function (e) { if (ev === 'pointerdown') e.preventDefault(); dodge(); });
+  });
+  window.addEventListener('resize', function () {
+    if (!done && no.classList.contains('flying') && !no.hidden) place();
+  });
+
+  function heartPath(ctx, s) {
+    ctx.beginPath();
+    ctx.moveTo(0, s * 0.35);
+    ctx.bezierCurveTo(0, -s * 0.1, -s * 0.7, -s * 0.1, -s * 0.7, s * 0.3);
+    ctx.bezierCurveTo(-s * 0.7, s * 0.65, 0, s * 0.85, 0, s * 1.1);
+    ctx.bezierCurveTo(0, s * 0.85, s * 0.7, s * 0.65, s * 0.7, s * 0.3);
+    ctx.bezierCurveTo(s * 0.7, -s * 0.1, 0, -s * 0.1, 0, s * 0.35);
+    ctx.closePath();
+  }
+
+  function confetti() {
+    var cv = $('#confetti'), ctx = cv.getContext('2d');
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var W = window.innerWidth, H = window.innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var cs = getComputedStyle(document.documentElement);
+    var g = function (n) { return cs.getPropertyValue(n).trim() || '#ff8fb3'; };
+    var heartCols = [g('--accent'), g('--ear-in'), g('--lav')];
+    var carrot = g('--carrot'), leaf = g('--leaf');
+    var P = [];
+    for (var i = 0; i < 90; i++) {
+      P.push({
+        x: W / 2 + (Math.random() - 0.5) * W * 0.3, y: H * 0.4,
+        vx: (Math.random() - 0.5) * 11, vy: -Math.random() * 12 - 4,
+        s: 8 + Math.random() * 9, r: Math.random() * 6, vr: (Math.random() - 0.5) * 0.25,
+        c: heartCols[i % heartCols.length], carrot: i % 3 === 0
+      });
+    }
+    var t0 = performance.now();
+    function frame(t) {
+      ctx.clearRect(0, 0, W, H);
+      var alive = 0;
+      for (var k = 0; k < P.length; k++) {
+        var p = P[k];
+        p.vy += 0.28; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+        if (p.y > H + 40) continue;
+        alive++;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.r);
+        if (p.carrot) {
+          ctx.fillStyle = carrot;
+          ctx.beginPath(); ctx.moveTo(-p.s * 0.3, -p.s * 0.5); ctx.lineTo(p.s * 0.3, -p.s * 0.5); ctx.lineTo(0, p.s * 0.8); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = leaf;
+          ctx.beginPath(); ctx.moveTo(0, -p.s * 0.5); ctx.lineTo(-p.s * 0.2, -p.s * 0.9); ctx.lineTo(p.s * 0.2, -p.s * 0.9); ctx.closePath(); ctx.fill();
+        } else {
+          ctx.translate(0, -p.s * 0.5);
+          ctx.fillStyle = p.c;
+          heartPath(ctx, p.s);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+      if (alive && t - t0 < 5500) requestAnimationFrame(frame);
+      else ctx.clearRect(0, 0, W, H);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  yes.addEventListener('click', function () {
+    if (done) return;
+    done = true;
+    setMood('happy');
+    say('ขอบคุณที่ให้อภัยไอนะ Ploy ไอรักยูที่สุดเลย');
+    askTitle.textContent = 'ขอบคุณนะ คนใจดีของไอ';
+    choice.hidden = true;
+    if (!reduce.matches) confetti();
+  });
+})();
+</script>
+
+</body></html>
